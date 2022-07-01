@@ -3,11 +3,12 @@
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_ros/transform_broadcaster.h>
 #include <geometry_msgs/TransformStamped.h>
+#include <nav_msgs/Odometry.h>
 
 union float_converter
 {
     float asFloat = 0.0f;
-    uint8_t asByte[4];
+    char asByte[4];
 };
 
 
@@ -31,10 +32,12 @@ class iRAP_SERIAL_PROXY
         boost::shared_ptr<ros::NodeHandle> nhGlobal;
         boost::shared_ptr<ros::NodeHandle> nhPrivate;
 
-        ros::Publisher tf_pub, odom_pub;
+        ros::Publisher odom_pub;
         ros::Subscriber joy_sub;
+        tf2_ros::TransformBroadcaster tf_br;
 
-        float_converter vx, vy, wz;
+        float_converter _vx, _vy, _wz, _px, _py, _cz;
+        float px, py, cz, vx, vy, wz;
 
         void recieved(const char*, size_t);        
 
